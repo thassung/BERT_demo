@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S-BERT Demo</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <style>
+    body {margin-top: 100px;}
+    .brief-description {font-style: italic; color:darkgray; font-size: smaller;}  
+  </style>
+  <body>
+    <div class="container mt-6">
+      <h1>S-BERT Demo</h1>
+      <p class="brief-description">
+        <em>a demo app from <a href='https://github.com/thassung/BERT_demo'>github repo</a></em>
+      </p>
+      <form id="inputForm">
+        <div class="form-group">
+          <label for="input_a">Input Premised Sentence</label>
+          <input type="text" class="form-control" id="input_a" name="input_a" placeholder="Enter a premised sentence"/>
+        </div>
+        <div class="form-group">
+          <label for="input_b">Input Hypothesized Sentence</label>
+          <input type="text" class="form-control" id="input_b" name="input_b" placeholder="Enter a hypothesized sentence"/>
+        </div>
+        <button type="button" class="btn btn-primary" id="submitBtn">
+          Submit
+        </button>
+      </form>
+      <div id="result1" class="mt-3 h4"></div>
+      <div id="result2" class="mt-3 h4"></div>
+    </div>
+
+    <!-- updating slider value shown -->
+    <script>
+      function updateSeriousness() {
+          var sliderValue = document.getElementById("seriousness").value;
+          document.getElementById("seriousnessDisplay").innerText = "Selected Seriousness: " + sliderValue;
+      }
+
+      function updateSeed() {
+          var sliderValue = document.getElementById("seed").value;
+          document.getElementById("seedDisplay").innerText = "Selected Seed: " + sliderValue;
+      }
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#submitBtn').click(function () {
+          event.preventDefault();
+          var inputData = {
+            input_a: $('#input_a').val(),
+            input_b: $('#input_b').val()
+          };
+
+          $('#result').text('Thinking. Please wait...');
+
+          $.ajax({
+            type: 'POST',
+            url: '/ifsim',
+            data: JSON.stringify(inputData),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (response) {
+              $('#result1').text("I think that they are " + response['my_sim']);
+              $('#result2').text("Expert thinks that they are " + response['pt_sim']);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

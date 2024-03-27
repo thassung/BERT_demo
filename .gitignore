@@ -1,0 +1,9 @@
+BERT og.ipynb
+*.pt
+*.pth
+S-BERT.ipynb
+Sentence Embedding.ipynb
+my_python311_env
+*.ai
+
+!SBERT.pth
